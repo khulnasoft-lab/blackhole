@@ -81,19 +81,20 @@ jobs:
 
       - name: Upload coverage to Codecov
         if: always()
-        uses: codecov/codecov-action@v4@<COMMIT_SHA>
+        uses: codecov/codecov-action@v4
         with:
           files: '**/coverage*.xml'
           flags: ${{ matrix.os }}-${{ matrix.python }}
-          - name: Cleanup Python artifacts (Unix)
-            if: always() && runner.os != 'Windows'
-            run: |
-              rm -rf .pytest_cache .coverage* **/__pycache__
-          - name: Cleanup Python artifacts (Windows)
-            if: always() && runner.os == 'Windows'
-            shell: pwsh
-            run: |
-              Remove-Item -Recurse -Force .pytest_cache, **\__pycache__
-              Get-ChildItem -Path . -Recurse -Include .coverage* | Remove-Item -Force
-          rm -rf .pytest_cache .coverage* __pycache__
-        if: always()
+          fail_ci_if_error: false
+
+      - name: Cleanup Python artifacts (Unix)
+        if: always() && runner.os != 'Windows'
+        run: |
+          rm -rf .pytest_cache .coverage* **/__pycache__
+
+      - name: Cleanup Python artifacts (Windows)
+        if: always() && runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          Remove-Item -Recurse -Force .pytest_cache, **\__pycache__
+          Get-ChildItem -Path . -Recurse -Include .coverage* | Remove-Item -Force
