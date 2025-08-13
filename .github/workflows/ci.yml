@@ -64,7 +64,9 @@ jobs:
         run: python makeBlackhole.py
 
       - name: Run tests
-        run: python testUpdateBlackholeFile.py
+        run: |
+          set -euo pipefail
+          python testUpdateBlackholeFile.py
 
       - name: Upload test results (if any)
         if: always()
