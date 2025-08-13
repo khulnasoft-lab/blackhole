@@ -87,7 +87,7 @@ def format_source_rows(source_list):
     rows = []
     for source in source_list:
         this_row = row_defaults.copy()
-        this_row.update(source)
+        this_row |= source
         rows.append(source_template.substitute(this_row))
     return "\n".join(rows) + "\n"
 
